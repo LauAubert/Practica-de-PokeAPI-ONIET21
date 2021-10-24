@@ -57,7 +57,7 @@ def profile(request):
     first_name = user.first_name
     last_name = user.last_name
     likeListAux = Favoritos.objects.filter(user=user)
-    for line in likeListAux
+    #for line in likeListAux
 
     return render(request, 'profile.html')
 
