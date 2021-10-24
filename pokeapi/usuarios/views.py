@@ -34,6 +34,5 @@ def register(request):
 
 
 def logout(request):
-    
-    return redirect("menu")
+    return redirect(request, "menu")
 
