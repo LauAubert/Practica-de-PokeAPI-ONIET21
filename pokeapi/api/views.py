@@ -31,7 +31,7 @@ def pokeLike(request):
 def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en la url
     user = request.user
     search = poke_id
-    poke_names = json.loads(requests.get('https://pokeapi.co/api/v2/pokemon/?limit=151').content)['name']
+    poke_names = json.loads(requests.get('https://pokeapi.co/api/v2/pokemon/?limit=151').content)['results']
     #if request.method == 'POST':
     if search: 
         poke_info=get_pokeinfo(search)
