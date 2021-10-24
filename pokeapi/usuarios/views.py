@@ -24,10 +24,11 @@ def register(request):
             repeat_password = request.POST.get("repeat_password")
             email = request.POST.get("email")
             if password == repeat_password:
-                User.create_user(username=user, password=password, email=email)
+                User.create_user(user, password, email)
+                print(user, password, repeat_password, email)
             else:
                 return render(request, "register.html")        
-    return render(request, "register.html")
+    return render(request, "thomasLogin.html")
 
 
 def logout(request):

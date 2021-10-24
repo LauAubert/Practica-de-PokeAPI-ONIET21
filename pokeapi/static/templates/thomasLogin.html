@@ -4,8 +4,12 @@
     </head>
     <body>
         <form action="", method="post">
-            <input type="text">
-            <input type="text" name="" id="">    
+            {% csrf_token %}
+            <input type="text" name="user" id="">
+            <input type="text" name="password" id=""> 
+            <input type="text" name="repeat_pasword" id=""> 
+            <input type="text" name="email" id="">    
+            <button type="submit" value="submit", name="submit"></button>
         </form>
     </body>
 </html>
