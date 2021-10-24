@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
@@ -10,7 +10,8 @@ def login_auth(request):
         password = request.POST.get("password")
         user = authenticate(username=user, password=password)
         if user is not None:
-            return redirect("menu")
+            login(request=request, user=user)
+            return redirect("menu",0)
         else:
             return render(request, "login.html", {"Failed": True})  
     return render(request, "login.html")
@@ -23,6 +24,8 @@ def register(request):
         nickname = request.POST.get("last_name")
         password = request.POST.get("password")
         mail = request.POST.get("email")
+        for users in User.objects.all(): 
+            if user == users.username: return render(request,'register.html',{'Failed':True})
         try:
             user = User.objects.create_user(username=user, password=password, first_name=name, last_name=nickname, email=mail)
             return redirect("menu",0) 
@@ -30,7 +33,6 @@ def register(request):
             return render(request, "register.html", {"failed": True})
     return render(request, "register.html")
 
-
 def logout_auth(request):
-    return redirect(request, "menu")
+    return redirect(request, "menu",0)
 
