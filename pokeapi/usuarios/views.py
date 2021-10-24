@@ -28,6 +28,7 @@ def register(request):
             if user == users.username: return render(request,'register.html',{'Failed':True})
         try:
             user = User.objects.create_user(username=user, password=password, first_name=name, last_name=nickname, email=mail)
+            login(request=request, user=user)
             return redirect("menu",0) 
         except Exception:
             return render(request, "register.html", {"failed": True})
