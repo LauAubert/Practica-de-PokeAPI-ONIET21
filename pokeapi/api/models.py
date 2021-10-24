@@ -1,8 +1,9 @@
 from django.db import models
 from django.db.models.base import Model
-from django.db.models.fields import CharField, IntegerField
+from django.contrib.auth.models import User
 
 
 class Favoritos(models.Model):
-    user = CharField(max_length=50)
-    pokeid = IntegerField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pok_id = models.PositiveIntegerField(max_length=64)
+
