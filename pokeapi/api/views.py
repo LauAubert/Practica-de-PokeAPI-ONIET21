@@ -9,10 +9,10 @@ def prueba(request):
     return render(request, 'prueba.html')
 
 def get_pokeinfo(poke_id):
-    flavor_text = (json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon-species/{poke_id}/')).content))['flavor_text_entries'][0]['flavor_text']
-    name = (json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon/{poke_id}/')).content))['name']
-    sprite = (json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon/{poke_id}/')).content))['sprites']['front_default']
-    stats = (json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon/{poke_id}/')).content))['stats']
+    flavor_text = json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon-species/{poke_id}/')).content)['flavor_text_entries'][0]['flavor_text']
+    name = json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon/{poke_id}/')).content)['name']
+    sprite = json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon/{poke_id}/')).content)['sprites']['front_default']
+    stats = json.loads((requests.get(f'https://pokeapi.co/api/v2/pokemon/{poke_id}/')).content)['stats']
     return {'poke_flavor_text':flavor_text, 'poke_name':name, 'poke_id':poke_id, 'poke_sprite':sprite, 'poke_stats':stats}
 
 @login_required
@@ -31,7 +31,7 @@ def pokeLike(request):
 def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en la url
     user = request.user
     search = poke_id
-    poke_names = (json.loads((requests.get('https://pokeapi.co/api/v2/pokemon/?limit=151')).content))['name']
+    poke_names = json.loads((requests.get('https://pokeapi.co/api/v2/pokemon/?limit=151')).content)['name']
     #if request.method == 'POST':
     if search: 
         poke_info=get_pokeinfo(search)
@@ -43,6 +43,11 @@ def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en l
 
 @login_required(login_url='menu')
 def profile(request):
+    user = request.user
+    username = user.username
+    first_name = user.first_name
+    last_name = user.last_name
+    likeList = Favoritos.objects.filter(user=user)
 
     return render(request, 'profile.html')
 
