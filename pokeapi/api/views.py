@@ -30,6 +30,7 @@ def pokeLike(request):
 
 def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en la url
     user = request.user
+    
     search = poke_id
     limit = 151
     poke_names_aux = json.loads(requests.get(f'https://pokeapi.co/api/v2/pokemon/?limit={limit}').content)['results']
@@ -47,7 +48,14 @@ def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en l
     else: 
         poke_info = get_pokeinfo(random.randint(0,150))
         poke_random = True
-    return render(request, 'menu.html', {'poke_info':poke_info, 'poke_names':poke_names, 'poke_random':poke_random})
+
+    if user.is_authenticated:
+        poke_id=poke_info['poke_id']
+        if Favoritos.objects.filter(user=user, poke_id=poke_id): poke_fav = True
+        else: poke_fav = False
+    else: poke_fav = False
+
+    return render(request, 'menu.html', {'poke_info':poke_info, 'poke_names':poke_names, 'poke_random':poke_random, 'poke_fav':poke_fav})
 
 @login_required(login_url='menu')
 def profile(request):
