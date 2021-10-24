@@ -30,24 +30,40 @@ def pokeLike(request):
 
 def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en la url
     user = request.user
+    
     search = poke_id
-    poke_names = json.loads(requests.get('https://pokeapi.co/api/v2/pokemon/?limit=151').content)['results']
-    #if request.method == 'POST':
+    limit = 151
+    poke_names_aux = json.loads(requests.get(f'https://pokeapi.co/api/v2/pokemon/?limit={limit}').content)['results']
+    poke_names = []
+    cont = 1
+    for object in poke_names_aux:
+        name = object['name']
+        id = cont
+        poke_names.append({'name':name, 'id':id})
+        cont+=1
+
     if search: 
         poke_info=get_pokeinfo(search)
         poke_random = False
     else: 
         poke_info = get_pokeinfo(random.randint(0,150))
         poke_random = True
-    return render(request, 'menu.html', {'poke_info':poke_info, 'poke_names':poke_names})
+
+    if user.is_authenticated:
+        poke_id=poke_info['poke_id']
+        if Favoritos.objects.filter(user=user, poke_id=poke_id): poke_fav = True
+        else: poke_fav = False
+    else: poke_fav = False
+
+    return render(request, 'menu.html', {'poke_info':poke_info, 'poke_names':poke_names, 'poke_random':poke_random, 'poke_fav':poke_fav})
 
 @login_required(login_url='menu')
 def profile(request):
     user = request.user
-    username = user.username
-    first_name = user.first_name
-    last_name = user.last_name
-    likeList = Favoritos.objects.filter(user=user)
-
-    return render(request, 'profile.html')
+    likeListAux = Favoritos.objects.filter(user=user)
+    likeList = []
+    for line in likeListAux:
+        poke_info = get_pokeinfo(line.poke_id)
+        likeList.append({'poke_name':poke_info['poke_name'],'poke_id':line.poke_id, 'poke_img':poke_info['poke_sprite']})
+    return render(request, 'profile.html', {'likeList':likeList})
 

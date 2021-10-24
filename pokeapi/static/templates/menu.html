@@ -1,0 +1,91 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+
+{% block titulo %}Menú{% endblock titulo %}
+    
+
+{% block content%}
+<div class="py-5"></div>
+
+<div class="py-5"></div>
+<div class="container">
+        <form action="" method="get">            
+            <select class='input has-text-centered'id="pokenames">
+                <option value="0">---------Busque un pokémon----------</option>
+
+                {% for poke in poke_names %}
+                <option value="{{poke.id}}">{{poke.name}}</option>
+                {% endfor %}
+                    
+            </select>  
+        </form>
+        <div class="py-3"></div>
+        <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="{{poke_info.poke_sprite}}" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">{{poke_info.poke_name}}</p>
+                  <p class="subtitle is-6">Types - Types</p>
+                </div>
+                
+                {% if user.is_authenticated %}
+                <form action="/pokeLike/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden"value='{{poke_info.poke_id}}' name="poke_id">
+                    
+                    {% if poke_fav %}
+                    <button class="button is-danger" type="submit">Remover de favoritos</button>
+                    {% else %}
+                    <button class="button" type="submit">Añadir a favoritos</button>
+
+                    {% endif %}
+                        
+                </form>                    
+                {% endif %}
+                    
+
+              </div>
+          
+              <div class="content">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th><abbr title="Numero Pokemon"></abbr></th>
+                        <th><abbr title="Vida">HP</abbr></th>
+                        <th><abbr title="Ataque">ATK</abbr></th>
+                        <th><abbr title="Defensa">DEF</abbr></th>
+                        <th><abbr title="Ataque especial">SP.ATK</abbr></th>
+                        <th><abbr title="Defensa especial">SP.DEF</abbr></th>
+                        <th><abbr title="Velocidad">Vel</abbr></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th id='pokeid'>{{poke_info.poke_id}}</th>
+                        {% for dato in poke_info.poke_stats %}
+                        <td>{{dato.base_stat}}</td>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  {{poke_info.poke_flavor_text}}
+                <br>
+                  
+
+                  
+              </div>
+            </div>
+          </div>
+    </div>
+{% endblock content  %}
+    
+
+{% block js %}
+    <script src="{% static 'scripts/buscar.js' %}"></script>
+{% endblock js %}
+    
