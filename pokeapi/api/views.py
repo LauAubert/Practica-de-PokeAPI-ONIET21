@@ -39,7 +39,7 @@ def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en l
         name = object['name']
         id = cont
         poke_names.append({'name':name, 'id':id})
-        id+=1
+        cont+=1
 
     #if request.method == 'POST':
     if search: 
