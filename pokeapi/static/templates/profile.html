@@ -1,0 +1,52 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block titulo %}
+    Perfil de {{request.user.username}}
+{% endblock titulo %}
+    
+
+{% block content %}
+<div class="py-5"></div>
+<div class="py-5"></div>
+<div class="container">
+    <div class="card">
+
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-96x96">
+                <img src="{% static 'resources/Trainer.png' %}" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <p class="title is-4">{{user.username}}</p>
+              <p class="subtitle is-6">{{user.first_name}} - {{user.last_name}}</p>
+            </div>
+          </div>
+      
+          <div class="content has-text-centered">
+            <div class="columns is-multiline is-centered">
+                
+                {% for poke in likeList %}
+                <div class="column is-2">
+                    <figure class="image is-96x96">
+                        <a href="/menu/{{poke.poke_id}}">
+                        <img src="{{poke.poke_img}}" alt="{{poke.poke_name}}" placeholder="{{poke.poke_name}}" >
+                    </a>
+                        {{poke.poke_name}}  
+                    </figure>
+                      
+                </div>
+                {% endfor %}
+                    
+            </div>
+            <br>
+            <p>Entenador pokemon desde</p>
+            {{user.date_joined}}
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock content %}
+    
