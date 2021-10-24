@@ -41,7 +41,6 @@ def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en l
         poke_names.append({'name':name, 'id':id})
         cont+=1
 
-    #if request.method == 'POST':
     if search: 
         poke_info=get_pokeinfo(search)
         poke_random = False
@@ -53,11 +52,10 @@ def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en l
 @login_required(login_url='menu')
 def profile(request):
     user = request.user
-    username = user.username
-    first_name = user.first_name
-    last_name = user.last_name
     likeListAux = Favoritos.objects.filter(user=user)
-    #for line in likeListAux
-
-    return render(request, 'profile.html')
+    likeList = []
+    for line in likeListAux:
+        poke_info = get_pokeinfo(line.poke_id)
+        likeList.append({'poke_name':poke_info['poke_name'],'poke_id':line.poke_id, 'poke_img':poke_info['poke_sprite']})
+    return render(request, 'profile.html', {'likeList':likeList})
 
