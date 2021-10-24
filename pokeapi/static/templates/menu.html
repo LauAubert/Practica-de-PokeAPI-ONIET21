@@ -35,7 +35,18 @@
                 </div>
                 
                 {% if user.is_authenticated %}
-                <button class="button">Añadir a favoritos</button>                    
+                <form action="/pokeLike/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden"value='{{poke_info.poke_id}}' name="poke_id">
+                    
+                    {% if poke_fav %}
+                    <button class="button is-danger" type="submit">Remover de favoritos</button>
+                    {% else %}
+                    <button class="button" type="submit">Añadir a favoritos</button>
+
+                    {% endif %}
+                        
+                </form>                    
                 {% endif %}
                     
 
