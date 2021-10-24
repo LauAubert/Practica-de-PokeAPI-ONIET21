@@ -36,5 +36,5 @@ def register(request):
 
 def logout_auth(request):
     logout(request)
-    return redirect(request, "menu",0)
+    return redirect("menu",0)
 
