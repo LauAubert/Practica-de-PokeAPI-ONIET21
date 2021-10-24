@@ -18,17 +18,16 @@ def login(request):
 
 def register(request):
     if request.method == "POST":
-        if request.POST.get("submit") == "submit":
-            user = request.POST.get("user")
-            password = request.POST.get("password")
-            repeat_password = request.POST.get("repeat_password")
-            email = request.POST.get("email")
-            if password == repeat_password:
-                User.create_user(user, password, email)
-                print(user, password, repeat_password, email)
-            else:
-                return render(request, "register.html")        
-    return render(request, "thomasLogin.html")
+        user = request.POST.get("username")
+        name = request.POST.get("first_name")
+        nickname = request.POST.get("last_name")
+        password = request.POST.get("password")
+        try:
+            user = User.objects.get(username=user, password=password, first_name=name, last_name=nickname)
+        except:
+            user = User.objects.create_user(username=user, password=password, first_name=name, last_name=nickname)
+            return redirect("menu")       
+    return render(request, "register.html")
 
 
 def logout(request):
