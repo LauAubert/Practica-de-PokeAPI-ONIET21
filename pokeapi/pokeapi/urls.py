@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-
+from django.views.static import serve 
+import pokeapi.settings as settings 
+from django.conf.urls import url
 urlpatterns = [
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATICFILES_DIRS[0]}), 
     path('admin/', admin.site.urls),
     path('usuarios/', include('usuarios.urls')),
     path('', include('api.urls'))
