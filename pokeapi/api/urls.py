@@ -8,6 +8,7 @@ urlpatterns = [
     path('prueba/', views.prueba),
     path('menu/<int:poke_id>', views.menu, name='menu'),
     path('profile/', views.profile, name='profile'),
-    path('pokeLike/', views.pokeLike, name='pokeLike')
+    path('pokeLike/', views.pokeLike, name='pokeLike'),
+    path('',views.menu_empty)
 
 ]

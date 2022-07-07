@@ -28,7 +28,7 @@ def pokeLike(request):
             poke_liked.save()
     return redirect('menu', poke_id)
 
-def menu(request, poke_id): #* Es necesario que se envíe el id del pokemon en la url
+def menu(request, poke_id=0): #* Es necesario que se envíe el id del pokemon en la url
     user = request.user
     
     search = poke_id
@@ -67,3 +67,5 @@ def profile(request):
         likeList.append({'poke_name':poke_info['poke_name'],'poke_id':line.poke_id, 'poke_img':poke_info['poke_sprite']})
     return render(request, 'profile.html', {'likeList':likeList})
 
+def menu_empty(request, id=0):
+    return menu(request, 0)
